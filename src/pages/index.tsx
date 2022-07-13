@@ -10,9 +10,7 @@ const Home: NextPage = () => {
   // example stuff
   const examples = trpc.useQuery(["example.getAll"]);
   const createExample = trpc.useMutation(["example.createExample"], {
-    onSuccess() {
-      examples.refetch();
-    },
+    onSuccess: () => examples.refetch(),
   });
   const [exampleMessage, setExampleMessage] = useState("");
 
@@ -86,7 +84,7 @@ const Home: NextPage = () => {
           <div>
             <button
               className="px-4 py-2 bg-black text-white rounded"
-              onClick={() => signIn("github")}
+              onClick={() => signIn("instagram")}
             >
               Sign in
             </button>
