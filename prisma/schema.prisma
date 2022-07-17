@@ -10,11 +10,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id String @id @default(cuid())
-    message String?
-}
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
@@ -58,4 +53,65 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Example {
+    id      String  @id @default(cuid())
+    message String?
+}
+
+model Product {
+    id     String   @id @default(cuid())
+    name   String?
+    desc   String?
+    price  Float
+    SKU    String?
+    images String[]
+
+    category     Category?  @relation(fields: [category_id], references: [id])
+    category_id  String?
+    inventory    Inventory? @relation(fields: [inventory_id], references: [id])
+    inventory_id String?    @unique
+    discount     Discount?  @relation(fields: [discount_id], references: [id])
+    discount_id  String?
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    deleted_at DateTime?
+}
+
+model Category {
+    id   String @id @default(cuid())
+    name String
+    desc String
+
+    products Product[]
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    deleted_at DateTime?
+}
+
+model Inventory {
+    id      String   @id @default(cuid())
+    qty     Int
+    product Product?
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    deleted_at DateTime?
+}
+
+model Discount {
+    id               String  @id @default(cuid())
+    name             String
+    desc             String
+    discount_percent Float
+    active           Boolean @default(false)
+
+    products Product[]
+
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    deleted_at DateTime?
 }
