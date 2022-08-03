@@ -38,13 +38,14 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?        @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    OrderDetails  OrderDetails[]
 }
 
 model VerificationToken {
@@ -60,6 +61,15 @@ model Example {
     message String?
 }
 
+model ProductCategory {
+    category_id String
+    category    Category? @relation(fields: [category_id], references: [id])
+    product_id  String
+    product     Product?  @relation(fields: [product_id], references: [id])
+
+    @@id([product_id, category_id])
+}
+
 model Product {
     id     String   @id @default(cuid())
     name   String?
@@ -68,16 +78,24 @@ model Product {
     SKU    String?
     images String[]
 
-    category     Category?  @relation(fields: [category_id], references: [id])
-    category_id  String?
-    inventory    Inventory? @relation(fields: [inventory_id], references: [id])
-    inventory_id String?    @unique
-    discount     Discount?  @relation(fields: [discount_id], references: [id])
+    categories   ProductCategory[]
+    inventory    Inventory?        @relation(fields: [inventory_id], references: [id])
+    inventory_id String?           @unique
+    discount     Discount?         @relation(fields: [discount_id], references: [id])
     discount_id  String?
 
     created_at DateTime  @default(now())
     updated_at DateTime  @updatedAt
     deleted_at DateTime?
+
+    OrderItem OrderItem[]
+}
+
+enum CategoryType {
+    brand
+    set
+    category
+    class
 }
 
 model Category {
@@ -85,7 +103,9 @@ model Category {
     name String
     desc String
 
-    products Product[]
+    type CategoryType @default(category)
+
+    products ProductCategory[]
 
     created_at DateTime  @default(now())
     updated_at DateTime  @updatedAt
@@ -114,4 +134,50 @@ model Discount {
     created_at DateTime  @default(now())
     updated_at DateTime  @updatedAt
     deleted_at DateTime?
+}
+
+model OrderDetails {
+    id    String @id @default(cuid())
+    total Float
+
+    user       User?           @relation(fields: [user_id], references: [id])
+    user_id    String?
+    payment    PaymentDetails? @relation(fields: [payment_id], references: [id])
+    payment_id String?
+
+    created_at DateTime    @default(now())
+    updated_at DateTime    @updatedAt
+    OrderItem  OrderItem[]
+}
+
+model OrderItem {
+    qty Int
+
+    order      OrderDetails @relation(fields: [order_id], references: [id])
+    order_id   String
+    product    Product      @relation(fields: [product_id], references: [id])
+    product_id String
+
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@id([order_id, product_id])
+}
+
+enum PaymentStatus {
+    completed
+    failed
+    in_progress
+    received
+}
+
+model PaymentDetails {
+    id           String         @id @default(cuid())
+    order_id     String
+    amount       Float
+    provider     String
+    status       PaymentStatus
+    OrderDetails OrderDetails[]
+    created_at   DateTime       @default(now())
+    updated_at   DateTime       @updatedAt
 }

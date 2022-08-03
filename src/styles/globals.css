@@ -6,4 +6,7 @@
   h1 {
     @apply text-2xl font-bold mb-4;
   }
+  input {
+    @apply transition-all h-[40px] px-4 placeholder:font-bold placeholder:text-gray-300 rounded bg-transparent hover:bg-gray-100 ring-2 hover:ring-offset-2 ring-black;
+  }
 }

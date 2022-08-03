@@ -2,6 +2,13 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createRouter } from "./context";
 
+enum CategoryType {
+  brand,
+  set,
+  category,
+  class,
+}
+
 export const categoryRouter = createRouter()
   // .middleware(async ({ ctx, next }) => {
   //   if (!ctx.session) throw new TRPCError({ code: "UNAUTHORIZED" });
@@ -25,6 +32,8 @@ export const categoryRouter = createRouter()
       desc: z.string().trim().min(2),
     }),
     async resolve({ ctx, input }) {
-      return ctx.prisma.category.create({ data: input });
+      return ctx.prisma.category.create({
+        data: { ...input, type: "brand" },
+      });
     },
   });

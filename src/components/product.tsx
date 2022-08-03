@@ -1,5 +1,3 @@
-import { trpc } from "../utils/trpc";
-
 function Price({
   price,
   discount_percent,
@@ -36,7 +34,7 @@ export default function Product({
       <div className="flex items-center gap-4">
         <div className="flex-1">
           <div className="tracking-widest text-gray-500 font-medium">
-            {product.category?.name}
+            {JSON.stringify(product.categories)}
           </div>
           <div className="text-xl font-bold">{product.name}</div>
           <div className="text-gray-600">{product.desc}</div>

@@ -16,7 +16,7 @@ const Categories: NextPage = () => {
         "Creating category..."
       ) : (
         <form
-          className="p-4 rounded bg-gray-200 flex gap-4"
+          className="p-4 rounded bg-gray-200 flex flex-col gap-4"
           onSubmit={async (e) => {
             e.preventDefault();
             const form = e.target as any;
@@ -36,6 +36,12 @@ const Categories: NextPage = () => {
               name="desc"
               className="w-full"
               placeholder="Desc"
+            />
+            <input
+              type="text"
+              name="type"
+              className="w-full"
+              placeholder="Category type"
             />
           </div>
           <input type="submit" />

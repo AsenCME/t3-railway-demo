@@ -12,7 +12,11 @@ export const productRouter = createRouter()
       return ctx.prisma.product.findMany({
         include: {
           inventory: { select: { qty: true } },
-          category: { select: { id: true, name: true, desc: true } },
+          categories: {
+            select: {
+              category: { select: { id: true, name: true, desc: true } },
+            },
+          },
           discount: {
             select: {
               id: true,
@@ -32,7 +36,11 @@ export const productRouter = createRouter()
         where: { ...input },
         include: {
           inventory: { select: { qty: true } },
-          category: { select: { id: true, name: true, desc: true } },
+          categories: {
+            select: {
+              category: { select: { id: true, name: true, desc: true } },
+            },
+          },
           discount: {
             select: {
               id: true,
