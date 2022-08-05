@@ -1,13 +1,11 @@
 import type { NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
+// import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
 import Layout from "../layouts";
 
 // todo add login
 const Home: NextPage = () => {
-  const { data } = useSession();
+  // const { data } = useSession();
 
   return (
     <Layout title="Home">
