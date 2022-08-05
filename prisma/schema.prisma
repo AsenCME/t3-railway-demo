@@ -56,11 +56,6 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-model Example {
-    id      String  @id @default(cuid())
-    message String?
-}
-
 model ProductCategory {
     category_id String
     category    Category? @relation(fields: [category_id], references: [id])

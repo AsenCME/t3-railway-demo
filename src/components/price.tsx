@@ -5,7 +5,7 @@ interface PriceProps {
 export function Price(props: PriceProps) {
   if (!props.price) return null;
   return (
-    <div className="text-4xl font-bold">
+    <div className="text-2xl font-bold">
       {props.discount_percent ? (
         <span>
           <del>${props.price}</del>{" "}

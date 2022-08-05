@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import Product from "../../components/product";
+import ProductComponent from "../../components/product";
 import Layout from "../../layouts";
 import { trpc } from "../../utils/trpc";
 
@@ -15,7 +15,7 @@ const Products: NextPage = () => {
       ) : (
         <div className="flex flex-col gap-4">
           {data?.map((x) => (
-            <Product
+            <ProductComponent
               key={x.id}
               product={x}
               onClick={() => push(`/products/${x.id}`)}
