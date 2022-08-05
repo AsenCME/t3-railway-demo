@@ -7,6 +7,7 @@ import { trpc } from "../../utils/trpc";
 const Products: NextPage = () => {
   const { data, isLoading } = trpc.useQuery(["products.getAll"]);
   const { push } = useRouter();
+
   return (
     <Layout title="Products">
       <h1>Products</h1>
@@ -18,7 +19,7 @@ const Products: NextPage = () => {
             <ProductComponent
               key={x.id}
               product={x}
-              onClick={() => push(`/products/${x.id}`)}
+              onClick={() => push(`/products/details/${x.id}`)}
             />
           ))}
         </div>

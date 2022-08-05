@@ -1,8 +1,8 @@
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
 
-import Layout from "../../layouts";
-import { trpc } from "../../utils/trpc";
+import Layout from "../../../layouts";
+import { trpc } from "../../../utils/trpc";
 
 const Products: NextPage = () => {
   const { query } = useRouter();
@@ -11,9 +11,7 @@ const Products: NextPage = () => {
   return (
     <Layout title={`Product ${data?.name}`}>
       <h1>Product #{id}</h1>
-      {/* {isLoading
-        ? "Loading..."
-        : data?.map((x) => <div key={x.id}>{JSON.stringify(x)}</div>)} */}
+      {isLoading ? "Loading..." : <div>{JSON.stringify(data, null, 2)}</div>}
     </Layout>
   );
 };
