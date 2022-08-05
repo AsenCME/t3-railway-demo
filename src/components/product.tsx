@@ -1,31 +1,10 @@
-function Price({
-  price,
-  discount_percent,
-}: {
-  price: number | null;
-  discount_percent: number | undefined | null;
-}) {
-  if (!price) return null;
-  return (
-    <div className="text-4xl font-bold">
-      {discount_percent ? (
-        <>
-          <del>${price}</del> {(price * (100 - discount_percent)) / 100}
-        </>
-      ) : (
-        "$" + price
-      )}
-    </div>
-  );
-}
+import { Price } from "./price";
 
-export default function Product({
-  product,
-  onClick,
-}: {
+interface Props {
   product: ProductFull;
   onClick: () => void;
-}) {
+}
+export default function Product({ product, onClick }: Props) {
   return (
     <div
       className="transition cursor-pointer rounded p-4 bg-gray-100 hover:bg-gray-300"

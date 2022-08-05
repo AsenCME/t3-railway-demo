@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { trpc } from "../../utils/trpc";
+import { trpc } from "../../../utils/trpc";
 
 const Categories: NextPage = () => {
   const router = useRouter();

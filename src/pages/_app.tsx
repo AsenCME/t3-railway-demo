@@ -1,11 +1,22 @@
-// src/pages/_app.tsx
+// next type
+import type { AppType } from "next/dist/shared/lib/utils";
+
+// trpc stuff
 import { withTRPC } from "@trpc/next";
 import type { AppRouter } from "../server/router";
-import type { AppType } from "next/dist/shared/lib/utils";
-import superjson from "superjson";
+
+// next auth stuff
 import { SessionProvider } from "next-auth/react";
+import superjson from "superjson";
+
+// Toast lib
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+// tailwind global styles
 import "../styles/globals.css";
 
+// main app
 const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -13,10 +24,19 @@ const MyApp: AppType = ({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
+      <ToastContainer
+        autoClose={5000}
+        position={"bottom-left"}
+        hideProgressBar={false}
+        pauseOnHover={true}
+        draggable={true}
+        theme="dark"
+      />
     </SessionProvider>
   );
 };
 
+// helper fn
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return "";
   if (process.browser) return ""; // Browser should use current path
@@ -25,6 +45,7 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
+// add trpc to the entire site (can enable SSR)
 export default withTRPC<AppRouter>({
   config({ ctx }) {
     /**
