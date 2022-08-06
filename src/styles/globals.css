@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.page-button {
+  @apply transition w-8 h-8 bg-gray-50 hover:bg-gray-100 rounded flex items-center justify-center;
+}
+
 @layer base {
   h1 {
     @apply text-2xl font-bold mb-4;

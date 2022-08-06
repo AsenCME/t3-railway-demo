@@ -30,29 +30,33 @@ export const categoryRouter = createRouter()
     },
   })
 
-  // .mutation("search", {
-  //   input: z.object({
-  //     name: z.string(),
-  //     type: z.string().refine([...CATEGORY_TYPES, "all"].includes),
-  //     page: z.number().optional().default(0),
-  //   }),
-  //   async resolve({ ctx, input }) {
-  //     console.log("search:", input);
-  //     // const items = await ctx.prisma.category.findMany({
-  //     //   // where: {
-  //     //   //   name: { contains: input.name },
-  //     //   // type:
-  //     //   //   input.type === "all" ? {} : { equals: input.type as CategoryType },
-  //     //   // },
-  //     //   take: DEFAULT_LIMIT,
-  //     //   skip: (input.page || 0) * DEFAULT_LIMIT,
-  //     //   orderBy: { created_at: "desc" },
-  //     // });
-  //     // console.log("items:", items);
-  //     // return items;
-  //     return {};
-  //   },
-  // })
+  .mutation("search", {
+    input: z.object({
+      name: z.string(),
+      type: z.string(),
+      page: z.number().optional().default(0),
+    }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.category.findMany({
+        where: {
+          name: { contains: input.name, mode: "insensitive" },
+          type:
+            input.type === "all"
+              ? undefined
+              : { equals: input.type as CategoryType },
+        },
+        take: DEFAULT_LIMIT,
+        skip: (input.page || 0) * DEFAULT_LIMIT,
+        orderBy: { created_at: "desc" },
+      });
+    },
+  })
+  .mutation("addToProduct", {
+    input: z.object({ category_id: z.string(), product_id: z.string() }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.productCategory.create({ data: { ...input } });
+    },
+  })
   .mutation("createCategory", {
     input: z.object({
       name: z.string().trim().min(2),

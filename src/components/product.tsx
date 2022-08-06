@@ -1,3 +1,4 @@
+import { ProductFull } from "../utils/types";
 import { Price } from "./price";
 
 interface Props {
@@ -5,6 +6,7 @@ interface Props {
   onClick: () => void;
 }
 export default function ProductComponent({ product, onClick }: Props) {
+  if (!product) return null;
   return (
     <div
       className="transition rounded py-2 px-4 bg-gray-50 hover:ring-2 hover:ring-gray-400 cursor-pointer"
@@ -13,7 +15,7 @@ export default function ProductComponent({ product, onClick }: Props) {
       <div className="flex items-center gap-4">
         <div className="flex-1">
           <div className="tracking-widest text-gray-500 font-medium">
-            {JSON.stringify(product.categories)}
+            {product.categories?.map((x) => x.category?.name).join(", ")}
           </div>
           <div className="text-lg font-bold">{product.name}</div>
           <div className="text-gray-600">{product.desc}</div>
