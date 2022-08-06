@@ -36,7 +36,7 @@ const NewCategory: NextPage = () => {
             error: "Category could not be created",
           });
         }}
-        initialValues={{ name: "", desc: "", type: "" }}
+        initialValues={{ name: "", desc: "", type: "brand" }}
         validationSchema={yup.object().shape({
           data: yup.string().min(2),
           desc: yup.string().min(2),

@@ -9,9 +9,12 @@
   p {
     @apply -mt-4 mb-4 text-gray-600;
   }
+  h6 {
+    @apply text-xs font-bold text-gray-600 uppercase tracking-widest mb-4 mt-12;
+  }
   input,
   select {
-    @apply transition-all focus:outline-none h-[40px] px-4 placeholder:font-bold placeholder:text-gray-300 rounded bg-transparent hover:bg-gray-100 ring-2 hover:ring-offset-2 ring-primary;
+    @apply transition-all focus:outline-none h-[40px] px-4 placeholder:font-bold placeholder:text-gray-300 rounded bg-transparent w-full hover:bg-gray-100 ring-2 hover:ring-offset-2 ring-primary;
   }
   button,
   button[type="submit"] {

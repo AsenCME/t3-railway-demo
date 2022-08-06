@@ -1,6 +1,6 @@
 interface PriceProps {
-  price: number | null;
-  discount_percent: number | undefined | null;
+  price?: number | null | undefined;
+  discount_percent?: number | undefined | null;
 }
 export function Price(props: PriceProps) {
   if (!props.price) return null;

@@ -5,7 +5,7 @@ import { formatDate } from "../utils/dates";
 
 export default function CategoryComponent(props: Category) {
   return (
-    <Link href={props.id}>
+    <Link href={"/categories/details/" + props.id}>
       <div className="transition p-2 rounded hover:bg-gray-100 cursor-pointer">
         <div className="flex gap-4">
           <div className="text-lg font-bold flex-1">{props.name}</div>

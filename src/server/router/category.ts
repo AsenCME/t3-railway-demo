@@ -1,6 +1,7 @@
 import { CategoryType } from "@prisma/client";
-import { z } from "zod";
 import { createRouter } from "./context";
+import { CATEGORY_TYPES, DEFAULT_LIMIT } from "../../utils/constants";
+import { z } from "zod";
 
 export const categoryRouter = createRouter()
   // .middleware(async ({ ctx, next }) => {
@@ -28,6 +29,30 @@ export const categoryRouter = createRouter()
       return ctx.prisma.category.findFirst({ where: { id: input.id } });
     },
   })
+
+  // .mutation("search", {
+  //   input: z.object({
+  //     name: z.string(),
+  //     type: z.string().refine([...CATEGORY_TYPES, "all"].includes),
+  //     page: z.number().optional().default(0),
+  //   }),
+  //   async resolve({ ctx, input }) {
+  //     console.log("search:", input);
+  //     // const items = await ctx.prisma.category.findMany({
+  //     //   // where: {
+  //     //   //   name: { contains: input.name },
+  //     //   // type:
+  //     //   //   input.type === "all" ? {} : { equals: input.type as CategoryType },
+  //     //   // },
+  //     //   take: DEFAULT_LIMIT,
+  //     //   skip: (input.page || 0) * DEFAULT_LIMIT,
+  //     //   orderBy: { created_at: "desc" },
+  //     // });
+  //     // console.log("items:", items);
+  //     // return items;
+  //     return {};
+  //   },
+  // })
   .mutation("createCategory", {
     input: z.object({
       name: z.string().trim().min(2),

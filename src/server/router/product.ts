@@ -1,4 +1,3 @@
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createRouter } from "./context";
 
@@ -14,7 +13,9 @@ export const productRouter = createRouter()
           inventory: { select: { qty: true } },
           categories: {
             select: {
-              category: { select: { id: true, name: true, desc: true } },
+              category: {
+                select: { id: true, name: true, desc: true, type: true },
+              },
             },
           },
           discount: {
@@ -38,7 +39,9 @@ export const productRouter = createRouter()
           inventory: { select: { qty: true } },
           categories: {
             select: {
-              category: { select: { id: true, name: true, desc: true } },
+              category: {
+                select: { id: true, name: true, type: true },
+              },
             },
           },
           discount: {
