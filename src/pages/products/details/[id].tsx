@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Category } from "@prisma/client";
+import Link from "next/link";
 
 import Layout from "../../../layouts";
 import { Price } from "../../../components/price";
@@ -12,9 +13,8 @@ import Dialog from "../../../components/dialog";
 import PageControls from "../../../components/page-controls";
 
 import { trpc } from "../../../utils/trpc";
-import { ProductFull } from "../../../utils/types";
 import { CATEGORY_TYPES, DEFAULT_LIMIT } from "../../../utils/constants";
-import Link from "next/link";
+import { OneProductReturnType } from "../../../server/router/product";
 
 interface AddCategoryDialogProps {
   dialog: boolean;
@@ -60,7 +60,7 @@ function AddCategoryDialog({
     {
       onSuccess() {
         if (product_id)
-          utils.invalidateQueries(["products.getById", { id: product_id }]);
+          utils.invalidateQueries(["products.one", { id: product_id }]);
       },
     }
   );
@@ -156,7 +156,7 @@ function AddCategoryDialog({
   );
 }
 
-function RenderPage(props: ProductFull) {
+function RenderPage(props: OneProductReturnType) {
   const [dialog, setDialog] = useState(false);
   if (!props) return <div>Product not found</div>;
   return (
@@ -206,7 +206,7 @@ function RenderPage(props: ProductFull) {
 const Products: NextPage = () => {
   const { query } = useRouter();
   const id = query.id as string;
-  const { data, isLoading } = trpc.useQuery(["products.getById", { id }]);
+  const { data, isLoading } = trpc.useQuery(["products.one", { id }]);
   return (
     <Layout title={`Product ${data?.name}`}>
       <h1>Product #{id}</h1>

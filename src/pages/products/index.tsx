@@ -5,7 +5,7 @@ import Layout from "../../layouts";
 import { trpc } from "../../utils/trpc";
 
 const Products: NextPage = () => {
-  const { data, isLoading } = trpc.useQuery(["products.getAll"]);
+  const { data, isLoading } = trpc.useQuery(["products.all"]);
   const { push } = useRouter();
 
   return (

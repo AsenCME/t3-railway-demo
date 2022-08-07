@@ -11,12 +11,8 @@ import BackButton from "../../components/back-button";
 import CategoryComponent from "../../components/category";
 
 const NewCategory: NextPage = () => {
-  const { data: recentlyCreated } = trpc.useQuery([
-    "categories.getRecentlyCreated",
-  ]);
-  const { mutateAsync, isLoading } = trpc.useMutation([
-    "categories.createCategory",
-  ]);
+  const { data: recentlyCreated } = trpc.useQuery(["categories.recent"]);
+  const { mutateAsync, isLoading } = trpc.useMutation(["categories.create"]);
 
   return (
     <Layout title="New Category Page">

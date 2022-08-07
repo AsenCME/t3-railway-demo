@@ -1,8 +1,8 @@
-import { ProductFull } from "../utils/types";
 import { Price } from "./price";
+import { AllProductsItemReturnType } from "../server/router/product";
 
 interface Props {
-  product: ProductFull;
+  product: AllProductsItemReturnType;
   onClick: () => void;
 }
 export default function ProductComponent({ product, onClick }: Props) {

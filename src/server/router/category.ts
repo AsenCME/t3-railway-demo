@@ -1,6 +1,6 @@
 import { CategoryType } from "@prisma/client";
 import { createRouter } from "./context";
-import { CATEGORY_TYPES, DEFAULT_LIMIT } from "../../utils/constants";
+import { DEFAULT_LIMIT } from "../../utils/constants";
 import { z } from "zod";
 
 export const categoryRouter = createRouter()
@@ -8,12 +8,12 @@ export const categoryRouter = createRouter()
   //   if (!ctx.session) throw new TRPCError({ code: "UNAUTHORIZED" });
   //   return next();
   // })
-  .query("getCategories", {
+  .query("all", {
     async resolve({ ctx }) {
       return ctx.prisma.category.findMany();
     },
   })
-  .query("getRecentlyCreated", {
+  .query("recent", {
     async resolve({ ctx }) {
       const startOfDay = new Date();
       startOfDay.setUTCHours(0, 0, 0, 0);
@@ -23,7 +23,7 @@ export const categoryRouter = createRouter()
       });
     },
   })
-  .query("getCategory", {
+  .query("one", {
     input: z.object({ id: z.string() }),
     async resolve({ ctx, input }) {
       return ctx.prisma.category.findFirst({ where: { id: input.id } });
@@ -57,7 +57,7 @@ export const categoryRouter = createRouter()
       return ctx.prisma.productCategory.create({ data: { ...input } });
     },
   })
-  .mutation("createCategory", {
+  .mutation("create", {
     input: z.object({
       name: z.string().trim().min(2),
       desc: z.string().trim().min(2),

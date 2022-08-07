@@ -6,7 +6,7 @@ import Layout from "../../layouts";
 import { trpc } from "../../utils/trpc";
 
 const Categories: NextPage = () => {
-  const { data, isLoading } = trpc.useQuery(["categories.getCategories"]);
+  const { data, isLoading } = trpc.useQuery(["categories.all"]);
 
   return (
     <Layout title="Categories">

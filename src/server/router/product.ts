@@ -1,12 +1,14 @@
 import { z } from "zod";
+import { DEFAULT_LIMIT } from "../../utils/constants";
 import { createRouter } from "./context";
+import { inferProcedureOutput } from "@trpc/server";
 
 export const productRouter = createRouter()
   // .middleware(async ({ ctx, next }) => {
   //   if (!ctx.session) throw new TRPCError({ code: "UNAUTHORIZED" });
   //   return next();
   // })
-  .query("getAll", {
+  .query("all", {
     async resolve({ ctx }) {
       return ctx.prisma.product.findMany({
         include: {
@@ -30,7 +32,7 @@ export const productRouter = createRouter()
       });
     },
   })
-  .query("getById", {
+  .query("one", {
     input: z.object({ id: z.string() }),
     async resolve({ ctx, input }) {
       return ctx.prisma.product.findUnique({
@@ -55,4 +57,34 @@ export const productRouter = createRouter()
         },
       });
     },
+  })
+  .query("forCategory", {
+    input: z.object({ id: z.string(), page: z.number().nullish().default(0) }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.productCategory.findMany({
+        where: { category_id: input.id },
+        skip: (input.page || 0) * DEFAULT_LIMIT,
+        take: DEFAULT_LIMIT,
+        include: {
+          product: {
+            select: { id: true, name: true, desc: true, images: true },
+          },
+        },
+      });
+    },
   });
+
+export type AllProductsReturnType = inferProcedureOutput<
+  typeof productRouter._def.queries.all
+>;
+export type AllProductsItemReturnType = inferProcedureOutput<
+  typeof productRouter._def.queries.all
+>[0];
+
+export type OneProductReturnType = Partial<
+  inferProcedureOutput<typeof productRouter._def.queries.one>
+>;
+
+export type ForCategoryReturnType = inferProcedureOutput<
+  typeof productRouter._def.queries.forCategory
+>;
