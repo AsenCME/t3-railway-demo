@@ -18,10 +18,13 @@
   }
   input,
   select {
-    @apply transition-all focus:outline-none h-[40px] px-4 placeholder:font-bold placeholder:text-gray-300 rounded bg-transparent w-full hover:bg-gray-100 ring-2 hover:ring-offset-2 ring-primary;
+    @apply transition-all focus:outline-none h-[40px] px-4 placeholder:font-bold placeholder:text-gray-300 rounded bg-transparent w-full border-2 border-solid border-primary hover:ring-offset-2 hover:ring-1 hover:ring-primary/50;
   }
   button,
   button[type="submit"] {
     @apply transition-all text-white font-bold bg-primary h-[40px] px-2 rounded hover:ring-2 hover:ring-black hover:ring-offset-2;
+  }
+  button.small {
+    @apply h-auto px-2 py-1;
   }
 }

@@ -63,13 +63,46 @@ export const productRouter = createRouter()
     async resolve({ ctx, input }) {
       return ctx.prisma.productCategory.findMany({
         where: { category_id: input.id },
+        orderBy: { category: { created_at: "desc" } },
         skip: (input.page || 0) * DEFAULT_LIMIT,
         take: DEFAULT_LIMIT,
         include: {
           product: {
-            select: { id: true, name: true, desc: true, images: true },
+            select: {
+              id: true,
+              name: true,
+              desc: true,
+              images: true,
+              created_at: true,
+            },
           },
         },
+      });
+    },
+  })
+
+  .mutation("search", {
+    input: z.object({ name: z.string(), page: z.number() }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.product.findMany({
+        where: { name: { contains: input.name, mode: "insensitive" } },
+        orderBy: { created_at: "desc" },
+        skip: input.page * DEFAULT_LIMIT,
+        take: DEFAULT_LIMIT,
+      });
+    },
+  })
+  .mutation("addToCategory", {
+    input: z.object({ category_id: z.string(), product_id: z.string() }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.productCategory.create({ data: { ...input } });
+    },
+  })
+  .mutation("removeFromCategory", {
+    input: z.object({ category_id: z.string(), product_id: z.string() }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.productCategory.delete({
+        where: { product_id_category_id: { ...input } },
       });
     },
   });

@@ -11,7 +11,7 @@ export default function PageControls(props: Props) {
       <div className="page-button cursor-pointer" onClick={props.onPrev}>
         <IoChevronBack />
       </div>
-      <div className="page-button">{props.page}</div>
+      <div className="page-button">{props.page + 1}</div>
       <div className="page-button cursor-pointer" onClick={props.onNext}>
         <IoChevronForward />
       </div>
