@@ -156,8 +156,23 @@ function AddCategoryDialog({
   );
 }
 
+// ! one product is only in a couple categories
+// ! but one category can have many, many products
 function RenderPage(props: OneProductReturnType) {
   const [dialog, setDialog] = useState(false);
+
+  const router = useRouter();
+
+  const utils = trpc.useContext();
+  const { mutateAsync: removeFromProduct } = trpc.useMutation(
+    ["categories.removeFromProduct"],
+    {
+      onSuccess(data, variables, context) {
+        utils.invalidateQueries(["products.one", { id: variables.product_id }]);
+      },
+    }
+  );
+
   if (!props) return <div>Product not found</div>;
   return (
     <div>
@@ -173,18 +188,43 @@ function RenderPage(props: OneProductReturnType) {
       {!props.categories?.length ? (
         <p>This product has no categories.</p>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-4">
+        <div className="grid grid-cols-2 gap-4 mb-4">
           {props.categories?.map((x) => (
-            <Link
+            <div
               key={x.category?.id}
-              href={`/categories/details/${x.category?.id}`}
+              className="p-2 rounded transition bg-gray-50 hover:ring-2 hover:ring-gray-400 cursor-pointer"
             >
-              <div className="p-2 rounded transition bg-gray-50 hover:ring-2 hover:ring-gray-400 cursor-pointer">
-                <div className="text-gray-600 font-bold">
-                  {x.category?.name}
-                </div>
+              <div className="font-bold">{x.category?.name}</div>
+              <div className="text-gray-600">{x.category?.desc}</div>
+              <div className="flex gap-2 justify-end mt-2">
+                <button
+                  className="small"
+                  onClick={() =>
+                    router.push(`/categories/details/${x.category?.id}`)
+                  }
+                >
+                  View
+                </button>
+                <button
+                  className="small bg-red-700"
+                  onClick={() => {
+                    if (!x.category?.id || !props.id)
+                      return toast("Insufficient data.");
+                    const promise = removeFromProduct({
+                      category_id: x.category.id,
+                      product_id: props.id,
+                    });
+                    toast.promise(promise, {
+                      pending: "Removing...",
+                      error: "Could not remove.",
+                      success: "Removed!",
+                    });
+                  }}
+                >
+                  Remove
+                </button>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}

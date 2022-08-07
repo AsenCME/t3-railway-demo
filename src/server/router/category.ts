@@ -57,6 +57,14 @@ export const categoryRouter = createRouter()
       return ctx.prisma.productCategory.create({ data: { ...input } });
     },
   })
+  .mutation("removeFromProduct", {
+    input: z.object({ category_id: z.string(), product_id: z.string() }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.productCategory.delete({
+        where: { product_id_category_id: { ...input } },
+      });
+    },
+  })
   .mutation("create", {
     input: z.object({
       name: z.string().trim().min(2),

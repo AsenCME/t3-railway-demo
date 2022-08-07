@@ -42,7 +42,7 @@ export const productRouter = createRouter()
           categories: {
             select: {
               category: {
-                select: { id: true, name: true, type: true },
+                select: { id: true, name: true, type: true, desc: true },
               },
             },
           },
