@@ -105,6 +105,25 @@ export const productRouter = createRouter()
         where: { product_id_category_id: { ...input } },
       });
     },
+  })
+  .mutation("create", {
+    input: z.object({
+      name: z.string(),
+      desc: z.string(),
+      price: z.number().positive(),
+      qty: z.number().nonnegative(),
+      SKU: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.product.create({
+        data: {
+          name: input.name,
+          desc: input.desc,
+          price: input.price,
+          inventory: { create: { qty: input.qty } },
+        },
+      });
+    },
   });
 
 export type AllProductsReturnType = inferProcedureOutput<

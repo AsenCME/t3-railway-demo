@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import ProductComponent from "../../components/product";
 import Layout from "../../layouts";
@@ -10,7 +11,12 @@ const Products: NextPage = () => {
 
   return (
     <Layout title="Products">
-      <h1>Products</h1>
+      <div className="flex justify-between gap-4 mb-4">
+        <h1>Products</h1>
+        <Link href={`/products/new`}>
+          <button>Add Product</button>
+        </Link>
+      </div>
       {isLoading ? (
         "Loading..."
       ) : (

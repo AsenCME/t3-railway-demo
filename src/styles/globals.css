@@ -18,7 +18,7 @@
   }
   input,
   select {
-    @apply transition-all focus:outline-none h-[40px] px-4 placeholder:font-bold placeholder:text-gray-300 rounded bg-transparent w-full border-2 border-solid border-primary hover:ring-offset-2 hover:ring-1 hover:ring-primary/50;
+    @apply transition-all focus:outline-none h-[40px] px-4 placeholder:font-bold placeholder:text-gray-400 rounded bg-gray-100 w-full border-2 border-solid hover:border-primary;
   }
   button,
   button[type="submit"] {

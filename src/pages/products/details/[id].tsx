@@ -5,7 +5,6 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Category } from "@prisma/client";
-import Link from "next/link";
 
 import Layout from "../../../layouts";
 import { Price } from "../../../components/price";
@@ -179,6 +178,7 @@ function RenderPage(props: OneProductReturnType) {
       <h6>Basic Details</h6>
       <div>{props.name}</div>
       <div>{props.desc}</div>
+      <div>SKU: {props.SKU || "No SKU specified"}</div>
       <Price
         price={props.price}
         discount_percent={props.discount?.discount_percent}
@@ -239,6 +239,21 @@ function RenderPage(props: OneProductReturnType) {
           props.categories?.map((x) => x.category?.id || "") || []
         }
       />
+
+      <h6>Inventory</h6>
+      <div className="flex gap-1 items-baseline">
+        <span className="text-2xl font-bold text-gray-600">
+          {props.inventory?.qty}
+        </span>
+        <span className="text-sm">Units</span>
+      </div>
+
+      <h6>Discount</h6>
+      <div>
+        <b>{props.discount?.name}</b>
+      </div>
+      <div>{props.discount?.desc}</div>
+      <div>{props.discount?.discount_percent}%</div>
     </div>
   );
 }
