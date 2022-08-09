@@ -14,6 +14,7 @@ import PageControls from "../../../components/page-controls";
 import { trpc } from "../../../utils/trpc";
 import { CATEGORY_TYPES, DEFAULT_LIMIT } from "../../../utils/constants";
 import { OneProductReturnType } from "../../../server/router/product";
+import Link from "next/link";
 
 interface AddCategoryDialogProps {
   dialog: boolean;
@@ -247,26 +248,45 @@ function RenderPage(props: OneProductReturnType) {
         </span>
         <span className="text-sm">Units</span>
       </div>
+      <button className="small bg-amber-500 mt-2">Edit inventory</button>
 
       <h6>Discount</h6>
-      <div>
-        <b>{props.discount?.name}</b>
-      </div>
-      <div>{props.discount?.desc}</div>
-      <div>{props.discount?.discount_percent}%</div>
+      {!props.discount ? (
+        <>
+          <p>No discount</p>
+          <button className="small bg-green-500 mt-2">Add Discount</button>
+        </>
+      ) : (
+        <>
+          <div>
+            <b>{props.discount.name}</b>
+          </div>
+          <div>{props.discount.desc}</div>
+          <div>{props.discount.discount_percent}%</div>
+          <button className="small bg-amber-500">Edit Discount</button>
+        </>
+      )}
     </div>
   );
 }
 
-const Products: NextPage = () => {
+const ProductDetails: NextPage = () => {
   const { query } = useRouter();
   const id = query.id as string;
   const { data, isLoading } = trpc.useQuery(["products.one", { id }]);
   return (
-    <Layout title={`Product ${data?.name}`}>
-      <h1>Product #{id}</h1>
+    <Layout title="Product Details">
+      <div className="flex justify-between">
+        <div>
+          <h1>Product Details</h1>
+          <p>Information about {data?.name}</p>
+        </div>
+        <Link href={`/products/edit/${id}`}>
+          <button className="small bg-amber-500">Edit Product</button>
+        </Link>
+      </div>
       {isLoading ? "Loading..." : <RenderPage {...data} />}
     </Layout>
   );
 };
-export default Products;
+export default ProductDetails;

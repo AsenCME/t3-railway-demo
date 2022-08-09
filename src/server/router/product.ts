@@ -120,7 +120,28 @@ export const productRouter = createRouter()
           name: input.name,
           desc: input.desc,
           price: input.price,
+          SKU: input.SKU,
           inventory: { create: { qty: input.qty } },
+        },
+      });
+    },
+  })
+  .mutation("edit", {
+    input: z.object({
+      id: z.string(),
+      name: z.string(),
+      desc: z.string(),
+      price: z.number().positive(),
+      SKU: z.string(),
+    }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.product.update({
+        where: { id: input.id },
+        data: {
+          name: input.name,
+          desc: input.desc,
+          price: input.price,
+          SKU: input.SKU,
         },
       });
     },
