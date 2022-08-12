@@ -9,8 +9,13 @@ export const categoryRouter = createRouter()
   //   return next();
   // })
   .query("all", {
-    async resolve({ ctx }) {
-      return ctx.prisma.category.findMany();
+    input: z.object({ page: z.number().nullish().default(0) }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.category.findMany({
+        skip: (input.page || 0) * DEFAULT_LIMIT,
+        take: DEFAULT_LIMIT,
+        orderBy: { created_at: "desc" },
+      });
     },
   })
   .query("recent", {

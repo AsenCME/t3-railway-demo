@@ -9,7 +9,8 @@ export const productRouter = createRouter()
   //   return next();
   // })
   .query("all", {
-    async resolve({ ctx }) {
+    input: z.object({ page: z.number().nullish().default(0) }),
+    async resolve({ ctx, input }) {
       return ctx.prisma.product.findMany({
         include: {
           inventory: { select: { qty: true } },
@@ -29,6 +30,9 @@ export const productRouter = createRouter()
             },
           },
         },
+        orderBy: { created_at: "desc" },
+        skip: (input.page || 0) * DEFAULT_LIMIT,
+        take: DEFAULT_LIMIT,
       });
     },
   })
