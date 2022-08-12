@@ -15,6 +15,8 @@ export const seed = async () => {
     )
   );
 
+  console.log("Discounts created", discounts.map((x) => x.id).join(", "));
+
   // create inventories
   const inventoriesData = new Array(25)
     .fill(null)
@@ -24,6 +26,8 @@ export const seed = async () => {
       prisma.inventory.create({ data: x, select: { id: true } })
     )
   );
+
+  console.log("Inventories created", inventories.map((x) => x.id).join(", "));
 
   // create products
   const productData = new Array(25).fill(null).map((_, i) => ({
@@ -44,6 +48,7 @@ export const seed = async () => {
       prisma.product.create({ data, select: { id: true } })
     )
   );
+  console.log("Products created", products.map((x) => x.id).join(", "));
 
   // create categories
   const categoryData = new Array(50).fill(null).map(() => ({
@@ -58,6 +63,7 @@ export const seed = async () => {
       prisma.category.create({ data, select: { id: true } })
     )
   );
+  console.log("Categories created", categories.map((x) => x.id).join(", "));
 
   // create product categories
   const productCategoryData = products.flatMap(({ id: product_id }) =>
@@ -69,5 +75,17 @@ export const seed = async () => {
         ]!.id,
     }))
   );
-  await prisma.productCategory.createMany({ data: productCategoryData });
+  await prisma.productCategory.createMany({
+    data: productCategoryData,
+    skipDuplicates: true,
+  });
+  console.log("ProductCategories created");
 };
+
+seed()
+  .then(() => prisma.$disconnect())
+  .catch((e) => {
+    console.error(e);
+    prisma.$disconnect();
+    process.exit(1);
+  });
