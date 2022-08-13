@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import Layout from "../../../layouts";
 import { trpc } from "../../../utils/trpc";
 import BackButton from "../../../components/back-button";
+import FormikErrors from "../../../components/formik-errors";
 
 const EditProduct: NextPage = () => {
   const router = useRouter();
@@ -49,27 +50,17 @@ const EditProduct: NextPage = () => {
           });
         }}
       >
-        {(props) => (
-          <Form className="flex flex-col gap-4">
-            {Object.keys(props.errors).length > 0 && (
-              <div className="p-2 mb-4 rounded bg-red-700 text-white flex flex-col gap-2">
-                {Object.entries(props.errors).map(([k, v]) => (
-                  <div key={k} className="hover:text-gray-300">
-                    <b>{k}</b>: {v}
-                  </div>
-                ))}
-              </div>
-            )}
-            <Field name="name" placeholder="Product name" />
-            <Field name="desc" placeholder="Product description" />
-            <Field name="SKU" placeholder="SKU" />
-            <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <b className="flex-none">Product price</b>
-              <Field name="price" placeholder="Product price" type="number" />
-            </div>
-            <button type="submit">Edit</button>
-          </Form>
-        )}
+        <Form className="flex flex-col gap-4">
+          <FormikErrors />
+          <Field name="name" placeholder="Product name" />
+          <Field name="desc" placeholder="Product description" />
+          <Field name="SKU" placeholder="SKU" />
+          <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <b className="flex-none">Product price</b>
+            <Field name="price" placeholder="Product price" type="number" />
+          </div>
+          <button type="submit">Edit</button>
+        </Form>
       </Formik>
     </Layout>
   );

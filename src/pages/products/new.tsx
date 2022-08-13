@@ -5,6 +5,7 @@ import * as yup from "yup";
 import Layout from "../../layouts";
 import { trpc } from "../../utils/trpc";
 import { toast } from "react-toastify";
+import FormikErrors from "../../components/formik-errors";
 
 const NewProduct: NextPage = () => {
   const { mutateAsync } = trpc.useMutation(["products.create"]);
@@ -31,35 +32,21 @@ const NewProduct: NextPage = () => {
           });
         }}
       >
-        {(props) => (
-          <Form className="flex flex-col gap-4">
-            {Object.keys(props.errors).length > 0 && (
-              <div className="p-2 mb-4 rounded bg-red-700 text-white flex flex-col gap-2">
-                {Object.entries(props.errors).map(([k, v]) => (
-                  <div key={k} className="hover:text-gray-300">
-                    <b>{k}</b>: {v}
-                  </div>
-                ))}
-              </div>
-            )}
-            <Field name="name" placeholder="Product name" />
-            <Field name="desc" placeholder="Product description" />
-            <Field name="SKU" placeholder="SKU" />
-            <div className="col-span-2 grid grid-cols-2 gap-4">
-              <b className="flex-none">Product price</b>
-              <Field name="price" placeholder="Product price" type="number" />
-            </div>
-            <div className="col-span-2 grid grid-cols-2 gap-4">
-              <b className="flex-none">Inventory quantity</b>
-              <Field
-                name="qty"
-                placeholder="Inventory quantity"
-                type="number"
-              />
-            </div>
-            <button type="submit">Create</button>
-          </Form>
-        )}
+        <Form className="flex flex-col gap-4">
+          <FormikErrors />
+          <Field name="name" placeholder="Product name" />
+          <Field name="desc" placeholder="Product description" />
+          <Field name="SKU" placeholder="SKU" />
+          <div className="col-span-2 grid grid-cols-2 gap-4">
+            <b className="flex-none">Product price</b>
+            <Field name="price" placeholder="Product price" type="number" />
+          </div>
+          <div className="col-span-2 grid grid-cols-2 gap-4">
+            <b className="flex-none">Inventory quantity</b>
+            <Field name="qty" placeholder="Inventory quantity" type="number" />
+          </div>
+          <button type="submit">Create</button>
+        </Form>
       </Formik>
     </Layout>
   );

@@ -16,7 +16,6 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", placeholder: "asencme", type: "text" },
         email: { label: "Email", placeholder: "asen@mail.com", type: "email" },
         password: { label: "Password", placeholder: "1234", type: "password" },
       },
@@ -47,6 +46,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.FACEBOOK_SECRET || "",
     }),
   ],
+  session: { strategy: "jwt" },
 };
 
 export default NextAuth(authOptions);

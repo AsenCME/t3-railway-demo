@@ -9,14 +9,10 @@ export const authRouter = createRouter()
       return ctx.session;
     },
   })
-  .middleware(async ({ ctx, next }) => {
-    // Any queries or mutations after this middleware will
-    // raise an error unless there is a current session
-    if (!ctx.session) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
-    return next();
-  })
+  // .middleware(async ({ ctx, next }) => {
+  //   if (!ctx.session) throw new TRPCError({ code: "UNAUTHORIZED" });
+  //   return next();
+  // })
   .query("getSecretMessage", {
     async resolve({ ctx }) {
       return "You are logged in and can see this secret message!";
@@ -37,7 +33,7 @@ export const authRouter = createRouter()
     async resolve({ ctx, input }) {
       if (await ctx.prisma.user.findUnique({ where: { email: input.email } }))
         return new TRPCError({
-          code: "BAD_REQUEST",
+          code: "FORBIDDEN",
           message: "User already exists",
         });
       const password = await hash(input.password, await genSalt(10));
