@@ -1,12 +1,14 @@
 import type { NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
 import Layout from "../layouts";
 
 function Account() {
-  const { data } = useSession();
-  if (!data)
+  const { data, status } = useSession();
+
+  if (status === "loading") return <div>Fetching session...</div>;
+  else if (!data)
     return (
       <div className="flex gap-4 mt-12">
         <Link href="/account/login">
@@ -32,7 +34,6 @@ function Account() {
     );
 }
 
-// todo add login
 const Home: NextPage = () => {
   return (
     <Layout title="Home">
