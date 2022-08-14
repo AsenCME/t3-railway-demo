@@ -39,6 +39,9 @@ const Home: NextPage = () => {
     <Layout title="Home">
       <h1>Tonak Website</h1>
       <div className="flex gap-4">
+        <Link href="/search">
+          <button>Search</button>
+        </Link>
         <Link href="/products">
           <button>Products</button>
         </Link>

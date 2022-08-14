@@ -1,6 +1,10 @@
 import { CategoryType } from "@prisma/client";
 import { createRouter } from "./context";
-import { DEFAULT_LIMIT } from "../../utils/constants";
+import {
+  CATEGORY_TYPES,
+  CATEGORY_TYPES_ENUM,
+  DEFAULT_LIMIT,
+} from "../../utils/constants";
 import { z } from "zod";
 
 export const categoryRouter = createRouter()
@@ -32,6 +36,16 @@ export const categoryRouter = createRouter()
     input: z.object({ id: z.string() }),
     async resolve({ ctx, input }) {
       return ctx.prisma.category.findFirst({ where: { id: input.id } });
+    },
+  })
+  .query("ofType", {
+    input: z.object({
+      type: z.enum(CATEGORY_TYPES_ENUM),
+    }),
+    async resolve({ ctx, input }) {
+      return ctx.prisma.category.findMany({
+        where: { type: input.type as CategoryType },
+      });
     },
   })
 

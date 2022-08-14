@@ -6,6 +6,12 @@ export enum CategoryType {
 }
 
 export const CATEGORY_TYPES = ["brand", "set", "category", "class"];
+export const CATEGORY_TYPES_ENUM = [
+  "brand",
+  "set",
+  "category",
+  "class",
+] as const;
 
 export const DATETIME_FORMAT = "iii, MMM dd yyyy (HH:mm)";
 export const DATETIME_FORMAT_THIS_YEAR = "iii, MMM dd (HH:mm)";

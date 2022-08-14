@@ -5,13 +5,16 @@
 .page-button {
   @apply transition w-8 h-8 bg-gray-50 hover:bg-gray-100 rounded flex items-center justify-center;
 }
+.item {
+  @apply bg-gray-50 hover:ring-2 hover:ring-gray-100 rounded p-4 transition cursor-pointer;
+}
 
 @layer base {
   h1 {
-    @apply text-2xl font-bold mb-4;
+    @apply text-2xl font-bold mb-4 truncate;
   }
   p {
-    @apply -mt-4 mb-4 text-gray-600;
+    @apply -mt-4 mb-4 text-gray-600 truncate;
   }
   h6 {
     @apply text-xs font-bold text-gray-600 uppercase tracking-widest mb-4 mt-12;
